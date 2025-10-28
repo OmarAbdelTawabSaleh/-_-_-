@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار توحيد الربوبية (المنهج السلفي)</title>
+    <style>
+        /* CSS (التنسيقات) */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            direction: rtl; 
+            text-align: right;
+        }
+
+        .quiz-container {
+            max-width: 850px; 
+            margin: 40px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1a5276; 
+            text-align: center;
+            border-bottom: 2px solid #5d98bf;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        /* تنسيقات حقل الاسم والبدء */
+        #user-info-area label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        /* تعديل صغير لمدخلات المستخدم */
+        #user-info-area input[type="text"] {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* تنسيق حقل الملف (الصورة) */
+        #user-info-area input[type="file"] {
+            width: 100%;
+            margin-bottom: 30px; /* زيادة التباعد قبل زر البدء */
+        }
+        
+        #start-btn {
+            background-color: #5d98bf; 
+            color: #fff;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+        #start-btn:hover {
+            background-color: #4a7d9e;
+        }
+
+        /* تنسيقات الاختبار */
+        #question-text {
+            font-size: 1.25em;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #e8f5e9; 
+            border-right: 5px solid #2ecc71; 
+            border-radius: 5px;
+        }
+
+        .options-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .option-item {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .option-item:hover {
+            background-color: #e0f2f1; 
+            border-color: #5d98bf;
+        }
+
+        .option-item.selected {
+            background-color: #5d98bf;
+            color: #fff;
+            border-color: #5d98bf;
+        }
+
+        /* تنسيق الأزرار معًا */
+        .quiz-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        #submit-btn {
+            flex-grow: 1; 
+            padding: 15px;
+            background-color: #2ecc71; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #submit-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        #prev-btn {
+            width: 150px; 
+            padding: 15px;
+            background-color: #f39c12; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #prev-btn:hover {
+            background-color: #e67e22;
+        }
+        
+        #prev-btn:disabled {
+            background-color: #bdc3c7; 
+            cursor: not-allowed;
+        }
+
+
+        .question-counter {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1em;
+            color: #7f8c8d;
+        }
+        
+        /* تنسيقات بطاقة النتائج */
+        #results-card {
+            font-size: 1.1em;
+            text-align: right;
+            padding: 25px;
+            background-color: #f0f8ff; 
+            border: 2px solid #5d98bf;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none; 
+        }
+
+        #results-card h2 {
+            color: #1a5276;
+            border-bottom: 2px dashed #5d98bf;
+            padding-bottom: 10px;
+        }
+        
+        #results-card p {
+            margin: 10px 0;
+        }
+
+        #results-card strong {
+            display: inline-block;
+            min-width: 120px;
+            color: #2c3e50;
+        }
+
+        /* تنسيق الصورة في الشهادة */
+        #certificate-photo {
+            width: 120px; 
+            height: 120px; 
+            border-radius: 50%; 
+            border: 3px solid #5d98bf; 
+            object-fit: cover; 
+            display: none; /* يتم إظهارها بواسطة JS عند تحميل الصورة */
+        }
+        #photo-placeholder {
+            text-align: center; 
+            margin-bottom: 20px;
+        }
+
+
+        /* زر الطباعة الجديد */
+        #print-certificate-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #34495e; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        #print-certificate-btn:hover {
+            background-color: #2c3e50;
+        }
+
+        /* تنسيقات قائمة الأخطاء */
+        #incorrect-answers-area {
+            margin-top: 30px;
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+        }
+        #incorrect-answers-area h3 {
+            color: #e74c3c; 
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #e74c3c;
+            padding-bottom: 5px;
+        }
+        #incorrect-list {
+            list-style: disc;
+            padding-right: 20px;
+        }
+        #incorrect-list li {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fdeaea; 
+            border-radius: 5px;
+            border-right: 3px solid #e74c3c;
+        }
+        #incorrect-list li strong {
+            color: #1a5276; 
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            min-width: auto;
+        }
+
+        /* تنسيقات خاصة بالطباعة (الشهادة) */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #results-card, #results-card * {
+                visibility: visible;
+            }
+            #results-card {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border: none;
+                box-shadow: none;
+                background-color: #fff;
+                padding: 50px;
+            }
+            #incorrect-answers-area, #print-certificate-btn {
+                display: none; 
+            }
+            #results-card h2 {
+                color: #1a5276 !important;
+                border-bottom: 4px double #5d98bf !important;
+                text-align: center;
+                font-size: 2em;
+                margin-bottom: 40px;
+            }
+            #results-card p {
+                font-size: 1.4em;
+                margin: 20px 0;
+            }
+            
+            /* إظهار الصورة وتوسيطها في الطباعة */
+            #certificate-photo {
+                display: block !important; 
+                margin: 0 auto 30px auto !important; 
+            }
+            #photo-placeholder {
+                visibility: visible !important;
+                /* التأكد من أن جميع الأبناء مرئيون */
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>📚 اختبار توحيد الربوبية (المنهج السلفي) - 25 سؤال</h1>
+
+    <div id="user-info-area">
+        <label for="full-name">الاسم الثلاثي:</label>
+        <input type="text" id="full-name" placeholder="أدخل اسمك الثلاثي هنا" required>
+        
+        <label for="user-photo">صورة شخصية (اختياري، للشهادة):</label>
+        <input type="file" id="user-photo" accept="image/*">
+        
+        <button id="start-btn">ابدأ الاختبار</button>
+    </div>
+    
+    <div id="quiz-area" style="display: none;">
+        <div class="question-counter" id="question-counter"></div>
+
+        <p id="question-text">سؤال الاختبار سيظهر هنا.</p>
+        
+        <ul id="options-list" class="options-list">
+            </ul>
+        
+        <div class="quiz-controls">
+            <button id="prev-btn" disabled>السابق</button>
+            <button id="submit-btn">السؤال التالي</button>
+        </div>
+    </div>
+
+    <div id="results-card">
+        <h2>🎉 شهادة إتمام اختبار التوحيد 🎉</h2>
+        
+        <div id="photo-placeholder">
+            <img id="certificate-photo" src="" alt="صورة الطالب">
+        </div>
+
+        <p><strong>الاسم:</strong> <span id="result-name"></span></p>
+        <p><strong>المادة:</strong> <span id="result-subject">توحيد الربوبية (المنهج السلفي)</span></p>
+        <hr>
+        <p><strong>النتيجة النهائية:</strong> <span id="result-score-text"></span></p>
+        <p><strong>ملاحظة:</strong> <span id="result-message"></span></p>
+
+        <div id="incorrect-answers-area">
+            <h3>⛔ الأخطاء التي وقعت فيها (للاستفادة والمراجعة)</h3>
+            <ul id="incorrect-list"></ul>
+        </div>
+
+        <button id="print-certificate-btn">🖨️ طباعة الشهادة</button>
+    </div>
+</div>
+
+<script>
+    /* JavaScript (المنطق البرمجي) - تم التعديل والإضافة هنا */
+
+    // 1. بيانات الأسئلة والأجوبة (25 سؤال عن توحيد الربوبية)
+    const quizData = [
+        // تم تكرار نفس الأسئلة الـ 25 لتوفير الوقت، يرجى مراجعة الإجابات الصحيحة في حال تغيير الترتيب
+        { question: "ما هو توحيد الربوبية؟", options: ["إفراد الله بأفعال العباد", "إفراد الله بأسمائه وصفاته", "إفراد الله بأفعاله كالخلق والرزق والتدبير", "إفراد الله بالعبادة"], userAnswer: null, correctAnswer: 2 },
+        { question: "هل أقرّ كفار قريش بوجود الله وتوحيد الربوبية؟", options: ["لا، أنكروه جملة وتفصيلاً", "نعم، أقروا به في الجملة", "لم يأتِ ذكرهم في القرآن", "كان إقرارهم خاصاً بعبادة الأصنام"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما هو الدليل النقلي الذي يثبت إقرار المشركين بتوحيد الربوبية؟", options: ["قوله تعالى: 'قل هو الله أحد'", "قوله تعالى: 'ولئن سألتهم من خلق السماوات والأرض ليقولن الله'", "قوله تعالى: 'وما خلقت الجن والإنس إلا ليعبدون'", "قول النبي ﷺ: 'إنما الأعمال بالنيات'"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما الذي يجب على المؤمن اعتقاده في مسألة الخلق والرزق والتدبير؟", options: ["أنها لله وللوسطاء الصالحين", "أنها لله وحده لا شريك له", "أنها منوطة بالطبيعة وقوانينها", "أنها من فعل الأنبياء والأولياء"], userAnswer: null, correctAnswer: 1 },
+        { question: "أي أنواع التوحيد هو الذي استدل به الرسل على وجوب توحيد الألوهية؟", options: ["الربوبية", "الأسماء والصفات", "الحكم والتشريع", "توحيد الذات"], userAnswer: null, correctAnswer: 0 },
+        { question: "ما معنى 'التدبير' في حق الله تعالى؟", options: ["التخطيط لحياة الإنسان فقط", "تصريف الأمور وتقديرها وتسييرها", "طلب الرزق والاجتهاد في العمل", "إصلاح ما أفسده العباد"], userAnswer: null, correctAnswer: 1 },
+        { question: "من الذي يعتقد أن هناك خالقاً ثانياً مساوياً لله في الخلق والتدبير؟", options: ["أهل السنة والجماعة", "غلاة الصوفية", "الثنوية والمجوس", "المرجئة"], userAnswer: null, correctAnswer: 2 },
+        { question: "هل يشمل توحيد الربوبية الإيمان بالقدر خيره وشره؟", options: ["لا، القدر جزء من الألوهية", "نعم، الإيمان بالقدر جزء أصيل من الربوبية", "الإيمان بالقدر واجب ولكنه ليس من التوحيد", "القدر خاص بالصالحين"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما هو الشرك في الربوبية؟", options: ["صرف العبادة لغير الله", "الاعتقاد بأن غير الله يملك التصرف المطلق في الكون", "إنكار أسماء الله الحسنى", "تقديم رأي البشر على كلام النبي"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما حكم من اعتقد أن النجوم والكواكب هي التي تسير الحوادث وتجلب الخير أو الشر؟", options: ["بدعة مكروهة", "شرك في الربوبية (شرك أكبر)", "خلاف في الفروع", "يعد من علم التنجيم المباح"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما هو موقف السلف من 'الخلق'؟", options: ["يُثبتون أن المخلوقات تخلق بعضها البعض", "أن الخلق لله وحده لا شريك له", "أن الخلق ينسب للعباد مجازاً", "أن الملائكة تخلق بأمر الله"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما هي دلالة قوله تعالى: 'الله خالق كل شيء وهو على كل شيء وكيل'؟", options: ["توحيد الألوهية", "توحيد الأسماء والصفات", "توحيد الربوبية", "توحيد الحكم"], userAnswer: null, correctAnswer: 2 },
+        { question: "هل يملك أي مخلوق القدرة على إحياء الموتى أو إماتة الأحياء استقلالاً؟", options: ["نعم، الصالحون يملكون ذلك", "نعم، الأنبياء يملكونه بإذن الله", "لا، ذلك خاص بالله وحده", "لا بأس بالاعتقاد أن الدواء يحيي"], userAnswer: null, correctAnswer: 2 },
+        { question: "ما هو موقف من يعتقد أن بعض الأولياء يعلمون الغيب المطلق كعلم الله؟", options: ["يعد من العبادة المحمودة", "يعد شركاً في الربوبية وشركاً في الأسماء والصفات", "يعد من المسائل الفقهية", "يعد من الكرامات المقبولة"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما هي أنواع الملك التي لا تكون إلا لله عز وجل؟", options: ["الملك العام والحكم المطلق", "ملك المال والعقار", "الملك الخاص للإنسان", "ملكية الأرض والسماء وما فيهما من خلق وتدبير"], userAnswer: null, correctAnswer: 3 },
+        { question: "ما هو موقف السلف من القول بأن هناك 'واجب وجود' غير الله يشاركه في الأزلية؟", options: ["قبول هذا القول كدليل عقلي", "يعد كفراً وشركاً في الربوبية", "يعد خلافاً لفظياً", "قبول القول عند الفلاسفة"], userAnswer: null, correctAnswer: 1 },
+        { question: "من هو 'المدبر' في قوله تعالى: 'فَالْمُدَبِّرَاتِ أَمْرًا'؟", options: ["العلماء والحكماء", "الجن الصالحون", "الملائكة الموكلة بتدبير الأمور بأمر الله", "الإنسان العاقل"], userAnswer: null, correctAnswer: 2 },
+        { question: "ما حكم من قال: 'إن الطبيعة هي التي خلقت النبات والحيوان'؟", options: ["قول مباح لا يضر", "شرك في الربوبية لنسبة الخلق لغير الله", "قول يجوز استعماله مجازاً", "قول خاص بعلماء النبات"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما معنى أن الله هو 'الرب'؟", options: ["المالك والمُصلح والمُدبّر والخالق والمُعبود", "الخالق والمُدبّر والمالك فقط", "الخالق والمالك فقط", "المالك المُصلح فقط"], userAnswer: null, correctAnswer: 1 },
+        { question: "هل يكفي الإيمان بتوحيد الربوبية وحده لدخول الجنة؟", options: ["نعم، هو التوحيد المطلوب فقط", "لا، لا بد من الإيمان والعمل بتوحيد الألوهية", "نعم، لأنه أصل التوحيد", "هو شرط للمسلمين فقط"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما هو موقف السلف من علم الفلك 'التسييري' الذي يدرس حركة الكواكب دون أن يعتقد تأثيرها في حياة الناس؟", options: ["حرام مطلقاً", "علم جائز ومباح لخدمة مصالح المسلمين", "شرك أصغر", "شرك أكبر"], userAnswer: null, correctAnswer: 1 },
+        { question: "هل الشرك في الربوبية لازم للشرك في الألوهية؟", options: ["نعم، دائماً", "لا، يمكن أن يقع الشرك في الألوهية دون الربوبية", "لا، المشركون أقروا بالربوبية ولم يوحدوا الألوهية", "نعم، وهو مذهب المعتزلة"], userAnswer: null, correctAnswer: 2 },
+        { question: "ما هو الدليل العقلي على أن الخالق هو واحد؟", options: ["إجماع البشر على خالق واحد", "دليل التمانع (لو كان فيهما آلهة إلا الله لفسدتا)", "كثرة الآلهة دليل على القوة", "لا يوجد دليل عقلي على ذلك"], userAnswer: null, correctAnswer: 1 },
+        { question: "هل الأخذ بالأسباب (كالذهاب للطبيب) ينافي توحيد الربوبية؟", options: ["نعم، لأن التوكل وحده يكفي", "لا، الأخذ بالأسباب مشروع وهو من تمام التوكل والربوبية", "نعم، إلا في حالات الضرورة القصوى", "لا، ولكنه يضعف التوحيد"], userAnswer: null, correctAnswer: 1 },
+        { question: "ما معنى 'التحليل والتحريم' كأحد أفعال الربوبية الخاصة بالله؟", options: ["التصرف في المال العام", "إصدار التشريعات والأحكام التي تحلّل وتحرّم", "تحليل المسائل الرياضية", "تحريم ما أحله الشرع"], userAnswer: null, correctAnswer: 1 }
+    ];
+
+    // 2. المتغيرات الرئيسية
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let userName = ''; 
+    let incorrectAnswers = []; 
+
+    // العناصر
+    const userInfoArea = document.getElementById('user-info-area');
+    const fullNameInput = document.getElementById('full-name');
+    const userPhotoInput = document.getElementById('user-photo'); // **المضاف**
+    const certificatePhoto = document.getElementById('certificate-photo'); // **المضاف**
+    const startButton = document.getElementById('start-btn');
+    const quizArea = document.getElementById('quiz-area');
+    const resultsCard = document.getElementById('results-card'); 
+    const questionTextElement = document.getElementById('question-text');
+    const optionsListElement = document.getElementById('options-list');
+    const submitButton = document.getElementById('submit-btn');
+    const prevButton = document.getElementById('prev-btn'); 
+    const printButton = document.getElementById('print-certificate-btn'); 
+    const counterElement = document.getElementById('question-counter');
+    const incorrectListElement = document.getElementById('incorrect-list'); 
+
+    // 3. دالة بدء الاختبار
+    startButton.addEventListener('click', () => {
+        const name = fullNameInput.value.trim();
+        if (name.length > 5) { 
+            userName = name;
+            
+            // **المنطق الجديد لتحميل الصورة:**
+            const file = userPhotoInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    certificatePhoto.src = e.target.result;
+                    certificatePhoto.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                certificatePhoto.src = '';
+                certificatePhoto.style.display = 'none'; // إخفاءها إذا لم يتم تحميل صورة
+            }
+
+            userInfoArea.style.display = 'none'; 
+            quizArea.style.display = 'block'; 
+            
+            // إعادة تعيين المتغيرات للبدء
+            currentQuestionIndex = 0;
+            score = 0;
+            incorrectAnswers = []; 
+            // إعادة تعيين الإجابات المخزنة
+            quizData.forEach(q => q.userAnswer = null); 
+            loadQuestion();
+        } else {
+            alert('من فضلك أدخل اسمك الثلاثي كاملاً لبدء الاختبار.');
+        }
+    });
+
+
+    // 4. دالة تحميل السؤال
+    function loadQuestion() {
+        if (currentQuestionIndex < quizData.length) {
+            const currentQuestion = quizData[currentQuestionIndex];
+            
+            counterElement.textContent = `السؤال ${currentQuestionIndex + 1} من ${quizData.length}`;
+            questionTextElement.textContent = currentQuestion.question;
+
+            optionsListElement.innerHTML = '';
+            currentQuestion.options.forEach((option, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = option;
+                listItem.classList.add('option-item');
+                listItem.dataset.index = index; 
+                listItem.addEventListener('click', () => selectAnswer(listItem, index));
+                
+                // تحديد الخيار السابق إذا كان موجوداً
+                if (currentQuestion.userAnswer === index) {
+                    listItem.classList.add('selected');
+                }
+
+                optionsListElement.appendChild(listItem);
+            });
+
+            // تحديث حالة أزرار التنقل
+            prevButton.disabled = currentQuestionIndex === 0;
+            submitButton.disabled = currentQuestion.userAnswer === null; 
+
+            if (currentQuestionIndex === quizData.length - 1) {
+                submitButton.textContent = 'عرض النتيجة النهائية';
+            } else {
+                submitButton.textContent = 'السؤال التالي';
+            }
+        } else {
+            showResults();
+        }
+    }
+
+    // 5. دالة اختيار الإجابة وحفظها
+    function selectAnswer(selectedItem, index) {
+        // إزالة التحديد من جميع الخيارات أولاً
+        document.querySelectorAll('.option-item').forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        // تحديد الخيار الحالي وحفظ الإجابة
+        selectedItem.classList.add('selected');
+        quizData[currentQuestionIndex].userAnswer = index; // **حفظ الإجابة**
+        submitButton.disabled = false;
+    }
+
+    // 6. دالة معالجة الانتقال للأمام
+    submitButton.addEventListener('click', () => {
+        // إذا كان هناك إجابة مختارة ومحفوظة
+        if (quizData[currentQuestionIndex].userAnswer !== null) {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+    });
+
+    // 7. دالة معالجة الانتقال للخلف
+    prevButton.addEventListener('click', () => {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion();
+        }
+    });
+
+    // 8. دالة طباعة الشهادة
+    printButton.addEventListener('click', () => {
+        window.print();
+    });
+
+    // 9. دالة عرض النتائج
+    function showResults() {
+        quizArea.style.display = 'none';
+        resultsCard.style.display = 'block';
+
+        // حساب النتيجة وتجميع الأخطاء
+        score = 0;
+        incorrectAnswers = [];
+        quizData.forEach((q, index) => {
+            if (q.userAnswer !== null && q.userAnswer === q.correctAnswer) {
+                score++;
+            } else if (q.userAnswer !== null && q.userAnswer !== q.correctAnswer) {
+                incorrectAnswers.push({
+                    question: q.question,
+                    userAnswer: q.userAnswer !== null ? q.options[q.userAnswer] : 'لم يتم الإجابة',
+                    correctAnswer: q.options[q.correctAnswer]
+                });
+            }
+        });
+
+        const totalQuestions = quizData.length;
+        const percentage = (score / totalQuestions) * 100;
+        let message = '';
+        
+        // تحديث محتوى بطاقة النتائج
+        document.getElementById('result-name').textContent = userName;
+        document.getElementById('result-score-text').textContent = `${score} / ${totalQuestions} (${percentage.toFixed(2)}%)`;
+        
+        if (percentage >= 90) {
+            message = '👍 ما شاء الله! نتيجة ممتازة، تدل على إلمام قوي بتوحيد الربوبية. بارك الله فيك.';
+            document.getElementById('result-message').innerHTML = '<span style="color:#2ecc71; font-weight:bold;">' + message + '</span>';
+        } else if (percentage >= 70) {
+            message = '👌 نتيجة جيدة جداً. تحتاج إلى مراجعة بسيطة لأصول الربوبية التي أخطأت فيها.';
+            document.getElementById('result-message').innerHTML = '<span style="color:#f39c12; font-weight:bold;">' + message + '</span>';
+        } else {
+            message = '📚 تحتاج إلى المزيد من المراجعة والتعلم. ننصحك بالرجوع إلى كتب التوحيد الميسرة في هذا الباب.';
+            document.getElementById('result-message').innerHTML = '<span style="color:#e74c3c; font-weight:bold;">' + message + '</span>';
+        }
+
+
+        // منطق عرض الأسئلة الخاطئة
+        incorrectListElement.innerHTML = ''; 
+        if (incorrectAnswers.length > 0) {
+            document.getElementById('incorrect-answers-area').style.display = 'block';
+            incorrectAnswers.forEach((item, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <strong>السؤال ${index + 1}:</strong> ${item.question}<br>
+                    <span style="color: #e74c3c;">إجابتك:</span> ${item.userAnswer}<br>
+                    <span style="color: #27ae60;">الإجابة الصحيحة:</span> ${item.correctAnswer}
+                `;
+                incorrectListElement.appendChild(listItem);
+            });
+        } else {
+            document.getElementById('incorrect-answers-area').style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
